@@ -9,12 +9,12 @@ Test::File::Contents - Test routines for examining the contents of files
 
 =head1 Version
 
-Version 0.01
+Version 0.02
 
 =cut
 
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 use Exporter;                   # load the class
 @ISA         = qw(Exporter);    # set it as the base class
@@ -116,16 +116,19 @@ sub file_md5sum {
     my ($file, $md5sum, $desc) = @_;
     $desc ||= "file matches md5sum";
     if (open IN, $file) {
-        my $ctx = Digest::MD5->new;
+        my $ctx = undef;
+        $ctx = Digest::MD5->new;
         $ctx->addfile(*IN);
-        if ($ctx->hexdigest eq $md5sum) {
+        my $result = $ctx->hexdigest;
+        if ($result eq $md5sum) {
             $Test->ok(1, $desc);
             return 1;
         } else {
-            $Test->diag("File $file has md5sum " . $ctx->hexdigest . " not $md5sum");
+            $Test->diag("File $file has md5sum " . $result . " not $md5sum");
             $Test->ok(0, $desc);
             return 0;
         }
+        close IN;
     } else {
         $Test->diag("Could not open file $file: $!");
         $Test->ok(0, $desc);
