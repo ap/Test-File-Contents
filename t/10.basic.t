@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use Test::More tests => 17;
+use Test::More tests => 25;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -26,10 +26,31 @@ file_contents_is("t/aaa.txt", "aaa\n");
 test_test("works when correct with default text");
 
 test_out("not ok 1 - file contents match string");
-test_diag("File t/aaa.txt does not match string provided");
+test_diag("File t/aaa.txt does not match 'bbb'");
 test_fail(+1);
 file_contents_is("t/aaa.txt", "bbb");
 test_test("file_contents_is works when incorrect");
+
+
+# ===============================================================
+# Tests for file_contents_isnt
+# ===============================================================
+
+ok(defined(&file_contents_isnt),     "function 'file_contents_isnt' exported");
+
+test_out("ok 1 - bbb test");
+file_contents_isnt("t/aaa.txt", "bbb\n", "bbb test");
+test_test("file_contents_isnt works when incorrect"); # XXX Ugh.
+
+test_out("ok 1 - file contents do not match string");
+file_contents_isnt("t/aaa.txt", "bbb\n");
+test_test("works when incorrect with default text");
+
+test_out("not ok 1 - file contents do not match string");
+test_diag("File t/aaa.txt matches 'aaa\n# '");
+test_fail(+1);
+file_contents_isnt("t/aaa.txt", "aaa\n");
+test_test("file_contents_isnt works when correct");
 
 
 # ===============================================================
@@ -46,10 +67,31 @@ file_contents_like("t/aaa.txt", qr/[abc]/);
 test_test("works when correct with default text");
 
 test_out("not ok 1 - file contents match regexp");
-test_diag("File t/aaa.txt does not match regexp provided");
+my $regexp = qr/[xyz]/;
+test_diag("File t/aaa.txt does not match '$regexp'");
 test_fail(+1);
-file_contents_like("t/aaa.txt", qr/[xyz]/);
+file_contents_like("t/aaa.txt", $regexp);
 test_test("works when incorrect");
+
+# ===============================================================
+# Tests for file_contents_unlike
+# ===============================================================
+
+ok(defined(&file_contents_unlike),  "function 'file_contents_unlike' exported");
+test_out("ok 1 - xyz regexp test");
+file_contents_unlike("t/aaa.txt", qr/[xyz]/, "xyz regexp test");
+test_test("works when incorrect");
+
+test_out("ok 1 - file contents do not match regexp");
+file_contents_unlike("t/aaa.txt", qr/[xyz]/);
+test_test("works when incorrect with default text");
+
+test_out("not ok 1 - file contents do not match regexp");
+$regexp = qr/[abc]/;
+test_diag("File t/aaa.txt matches '$regexp'");
+test_fail(+1);
+file_contents_unlike("t/aaa.txt", $regexp);
+test_test("works when correct");
 
 # ===============================================================
 # Tests for file_md5sum

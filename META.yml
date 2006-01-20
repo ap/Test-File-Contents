@@ -1,13 +1,8 @@
 --- #YAML:1.0
 name: Test-File-Contents
-version: 0.02
-author: Kirrily Robert <skud@cpan.org>
+version: 0.03
+author:
+  - Kirrily Robert <skud@cpan.org>
 abstract: Test routines for examining the contents of files
 license: unknown
-requires:
-  Test::More: 0
-provides:
-  Test::File::Contents:
-    file: lib/Test/File/Contents.pm
-    version: 0.02
-generated_by: Module::Build version 0.25
+generated_by: Module::Build version 0.2611, without YAML.pm
