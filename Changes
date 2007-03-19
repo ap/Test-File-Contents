@@ -1,11 +1,19 @@
 Revision history for Test-File-Contents
 
-0.01    August 25th, 2004
-        First version, released on an unsuspecting world.
+0.05    2007-03-20
+        Packaging fixes. No functional changes.
 
-0.02    August 25th, 2004
-        Minor packaging fixes.
+0.04    2005-10-26
+        Small tweaks to the packaging, mostly for CPANTS.  No functional
+        changes.
 
-0.03    January 20th, 2006
+0.03    2006-01-20
         Added file_contents_isnt and file_contents_unlike and made file
         access OS-neutral (contributed by David Wheeler).
+
+0.02    2004-08-25
+        Minor packaging fixes.
+
+0.01    2004-08-25
+        First version, released on an unsuspecting world.
+

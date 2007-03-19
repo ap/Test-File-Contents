@@ -9,12 +9,12 @@ Test::File::Contents - Test routines for examining the contents of files
 
 =head1 VERSION
 
-Version 0.03
+Version 0.05
 
 =cut
 
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
-$VERSION = '0.03';
+$VERSION = '0.05';
 
 use Exporter;                   # load the class
 @ISA         = qw(Exporter);    # set it as the base class

@@ -4,7 +4,7 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name         => 'Test::File::Contents',
-    license             => '',
+    license             => 'perl',
     dist_author         => 'Kirrily Robert <skud@cpan.org>',
     dist_version_from   => 'lib/Test/File/Contents.pm',
     requires => {

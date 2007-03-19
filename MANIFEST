@@ -11,3 +11,4 @@ t/pod.t
 t/aaa.txt
 t/aaa2.txt
 t/bbb.txt
+examples/simple.pl
