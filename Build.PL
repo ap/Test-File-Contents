@@ -2,15 +2,28 @@ use strict;
 use warnings;
 use Module::Build;
 
-my $builder = Module::Build->new(
+Module::Build->new(
     module_name         => 'Test::File::Contents',
     license             => 'perl',
-    dist_author         => 'Kirrily Robert <skud@cpan.org>',
-    dist_version_from   => 'lib/Test/File/Contents.pm',
+    build_requires     => {
+        'Module::Build' => '0.30',
+        'Test::More'    => '0.70',
+    },
     requires => {
-        'Test::More' => 0,
+        'Test::Builder' => '0.70',
+        'Digest::MD5'   => 0,
+        'File::Spec'    => 0,
+    },
+    recommends => {
+        'Test::Pod'           => '1.20',
+        'Test::Pod::Coverage' => '1.06',
+    },
+    meta_merge => {
+        resources => {
+            homepage   => 'http://search.cpan.org/dist/Test-File-Contents/',
+            bugtracker => 'http://github.com/theory/test-file-contents/issues/',
+            repository => 'http://github.com/theory/test-file-contents/tree/',
+        }
     },
     add_to_cleanup      => [ 'Test-File-Contents-*' ],
-);
-
-$builder->create_build_script();
+)->create_build_script;
