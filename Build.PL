@@ -5,6 +5,7 @@ use Module::Build;
 Module::Build->new(
     module_name         => 'Test::File::Contents',
     license             => 'perl',
+    configure_requires  => { 'Module::Build' => '0.30' },
     build_requires     => {
         'Module::Build' => '0.30',
         'Test::More'    => '0.70',

@@ -3,5 +3,5 @@ blib
 Test-File-Contents-*
 MANIFEST
 MANIFEST.bak
-META.*
+*META.*
 Build
