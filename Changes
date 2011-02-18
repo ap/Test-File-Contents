@@ -1,6 +1,12 @@
 Revision history for Test-File-Contents
 
 0.11
+      - No require Perl 5.6.2 or higher.
+      - Added encoding option, to make sure that files are read in their
+        proper encoding.
+      - Significant refactoring; only visible change should be that the
+        actualy MD5 checksum will no longer be included in the `file_md5sum`
+        failure diagnostics.
 
 0.10  2011-02-18
       - Maintainership taken by David E. Wheeler.

@@ -14,6 +14,7 @@ Module::Build->new(
         'Test::Builder' => '0.70',
         'Digest::MD5'   => 0,
         'File::Spec'    => 0,
+        'perl'          => 5.006002,
     },
     recommends => {
         'Test::Pod'           => '1.20',

@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl -w
 
-use Test::More tests => 33;
+use Test::More tests => 52;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -31,6 +31,31 @@ test_diag("    File t/data/aaa.txt contents not equal to 'bbb'");
 file_contents_eq("t/data/aaa.txt", "bbb");
 test_test("file_contents_eq works when incorrect");
 
+# With encoding.
+UTF8: {
+    use utf8;
+    test_out("ok 1 - t/data/utf8.txt contents equal to string");
+    file_contents_eq('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+    test_test("file_contents_eq works with UTF-8 encoding");
+}
+
+# Should fail if our string isn't decoded.
+test_out("not ok 1 - t/data/utf8.txt contents equal to string");
+test_fail(+2);
+test_diag("    File t/data/utf8.txt contents not equal to 'ååå'");
+file_contents_eq('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+test_test("file_contents_eq fails with encoded arg string");
+
+UTF8: {
+    # Should fail if the encoding is wrong.
+    use utf8;
+    test_out("not ok 1 - t/data/utf8.txt contents equal to string");
+    test_fail(+2);
+    test_diag("    File t/data/utf8.txt contents not equal to 'ååå'");
+    file_contents_eq('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
+    test_test("file_contents_eq works with Big5 encoding");
+}
+
 # ===============================================================
 # Tests for file_contents_ne
 # ===============================================================
@@ -50,6 +75,26 @@ test_fail(+2);
 test_diag("    File t/data/aaa.txt contents equal to 'aaa\n# '");
 file_contents_ne("t/data/aaa.txt", "aaa\n");
 test_test("file_contents_ne works when correct");
+
+# With encoding.
+UTF8: {
+    use utf8;
+    test_out("ok 1 - t/data/utf8.txt contents not equal to string");
+    file_contents_ne('t/data/utf8.txt', 'ååå', { encoding => ':raw' });
+    test_test("file_contents_ne works with :raw encoding");
+
+    # Should fail if our string is decoded.
+    test_out("not ok 1 - t/data/utf8.txt contents not equal to string");
+    test_fail(+2);
+    test_diag("    File t/data/utf8.txt contents equal to 'ååå'");
+    file_contents_ne('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+    test_test("file_contents_ne fails with encoded arg string");
+
+    # Should pass if the encoding is wrong.
+    test_out("ok 1 - t/data/utf8.txt contents not equal to string");
+    file_contents_ne('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
+    test_test("file_contents_ne works with Big5 encoding");
+}
 
 # ===============================================================
 # Tests for file_contents_is
@@ -111,6 +156,33 @@ test_diag("    File t/data/aaa.txt contents do not match /$regexp/");
 file_contents_like("t/data/aaa.txt", $regexp);
 test_test("works when incorrect");
 
+# With encoding.
+UTF8: {
+    use utf8;
+    test_out("ok 1 - t/data/utf8.txt contents match regex");
+    file_contents_like('t/data/utf8.txt', qr/å/, { encoding => 'UTF-8' });
+    test_test("file_contents_like works with UTF-8 encoding");
+}
+
+# Should fail if our string isn't decoded.
+$regexp = qr/å/;
+test_out("not ok 1 - t/data/utf8.txt contents match regex");
+test_fail(+2);
+test_diag("    File t/data/utf8.txt contents do not match /$regexp/");
+file_contents_like('t/data/utf8.txt', $regexp, { encoding => 'UTF-8' });
+test_test("file_contents_like fails with encoded arg string");
+
+UTF8: {
+    # Should fail if the encoding is wrong.
+    use utf8;
+    $regexp = qr/å/;
+    test_out("not ok 1 - t/data/utf8.txt contents match regex");
+    test_fail(+2);
+    test_diag("    File t/data/utf8.txt contents do not match /$regexp/");
+    file_contents_like('t/data/utf8.txt', $regexp, { encoding => 'Big5' });
+    test_test("file_contents_like works with Big5 encoding");
+}
+
 # ===============================================================
 # Tests for file_contents_unlike
 # ===============================================================
@@ -131,6 +203,27 @@ test_diag("    File t/data/aaa.txt contents match /$regexp/");
 file_contents_unlike("t/data/aaa.txt", $regexp);
 test_test("works when correct");
 
+# With encoding.
+UTF8: {
+    use utf8;
+    my $regexp = qr/å/;
+    test_out("ok 1 - t/data/utf8.txt contents do not match regex");
+    file_contents_unlike('t/data/utf8.txt', $regexp, { encoding => ':raw' });
+    test_test("file_contents_unlike works with :raw encoding");
+
+    # Should fail if our string is decoded.
+    test_out("not ok 1 - t/data/utf8.txt contents do not match regex");
+    test_fail(+2);
+    test_diag("    File t/data/utf8.txt contents match /$regexp/");
+    file_contents_unlike('t/data/utf8.txt', $regexp, { encoding => 'UTF-8' });
+    test_test("file_contents_unlike fails with encoded arg string");
+
+    # Should pass if the encoding is wrong.
+    test_out("ok 1 - t/data/utf8.txt contents do not match regex");
+    file_contents_unlike('t/data/utf8.txt', $regexp, { encoding => 'Big5' });
+    test_test("file_contents_unlike works with Big5 encoding");
+}
+
 # ===============================================================
 # Tests for file_md5sum
 # ===============================================================
@@ -149,9 +242,29 @@ test_test("file_md5sum works when correct with default text");
 
 test_out("not ok 1 - t/data/aaa.txt has md5sum");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt has md5sum 5c9597f3c8245907ea71a89d9d39d08e, not 0123456789abcdef0123456789abcdef");
+test_diag("    File t/data/aaa.txt does not have md5 checksum 0123456789abcdef0123456789abcdef");
 file_md5sum("t/data/aaa.txt", "0123456789abcdef0123456789abcdef");
 test_test("file_md5sum works when incorrect");
+
+# Try encoded file.
+test_out("ok 1 - utf8 md5sum test");
+file_md5sum("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test");
+test_test("file_md5sum works on utf8 file");
+
+test_out("ok 1 - utf8 md5sum test");
+file_md5sum("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
+    encoding => ':raw',
+});
+test_test("file_md5sum works on raw utf8 file");
+
+# Try encoded file with encoding.
+test_out("not ok 1 - utf8 md5sum test");
+test_fail(+2);
+test_diag("    File t/data/utf8.txt does not have md5 checksum 24bbe7a3423595c452c689e2b62f4b04");
+file_md5sum("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
+    encoding => 'UTF-8',
+});
+test_test("file_md5sum fails on decoded utf8 file");
 
 # ===============================================================
 # Tests for file_contents_identical
@@ -172,3 +285,20 @@ test_fail(+2);
 test_diag("    Files t/data/aaa.txt and t/data/bbb.txt are not identical.");
 file_contents_identical("t/data/aaa.txt", "t/data/bbb.txt");
 test_test("file_contents_identical works when incorrect");
+
+# With encoding.
+test_out("ok 1 - whatever");
+file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => 'UTF-8' }, 'whatever');
+test_test("file_contents_identical works with UTF-8 decoding");
+
+test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
+file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt');
+test_test("file_contents_identical works without UTF-8 decoding");
+
+test_out("ok 1 - whatever");
+file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', 'whatever', { encoding => 'Big5' });
+test_test("file_contents_identical works with Big5 decoding");
+
+test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
+file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => ':raw' });
+test_test("file_contents_identical works with :raw decoding");
