@@ -17,11 +17,13 @@ our $VERSION = '0.11';
 use Test::Builder;
 use Digest::MD5;
 use File::Spec;
+use Text::Diff;
 
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(
     file_contents_eq
+    file_contents_eq_or_diff
     file_contents_ne
     file_contents_is
     file_contents_isnt
@@ -37,10 +39,11 @@ my $Test = Test::Builder->new;
 
   use Test::File::Contents;
 
-  file_contents_eq        $file,  $string,  $description;
-  file_contents_like      $file,  qr/foo/,  $description;
-  file_md5sum             $file,  $md5sum,  $description;
-  file_contents_identical $file1, $file2,   $description;
+  file_contents_eq         $file,  $string,  $description;
+  file_contents_eq_or_diff $file,  $string,  $description;
+  file_contents_like       $file,  qr/foo/,  $description;
+  file_md5sum              $file,  $md5sum,  $description;
+  file_contents_identical  $file1, $file2,   $description;
 
 =head1 Description
 
@@ -84,6 +87,29 @@ In your test file and write it all in C<UTF-8>. For example:
   file_contents_eq('utf8.txt',   'ååå', { encoding => 'UTF-8' });
   file_contents_eq('latin1.txt', 'ååå', { encoding => 'UTF-8' });
 
+=item C<style>
+
+The style of diff to output in the diagnostics in the case of a failure
+in C<file_contents_eq_or_diff>. The possible values are:
+
+=over
+
+=item Unified
+
+=item Context
+
+=item OldStyle
+
+=item Table
+
+=back
+
+=item C<context>
+
+Determines the amount of context displayed in diagnostic diff output. If you
+need to seem more of the area surrounding different lines, pass this option to
+determine how many more links you'd like to see.
+
 =back
 
 =head2 Test Functions
@@ -122,6 +148,51 @@ sub file_contents_eq($$;$$) {
 }
 
 *file_contents_is = \&file_contents_eq;
+
+=head3 file_contents_eq_or_diff
+
+  file_contents_eq_or_diff $file, $string, $description;
+  file_contents_eq_or_diff $file, $string, { encoding => 'UTF-8' };
+  file_contents_eq_or_diff $file, $string, { style    => 'context' }, $description;
+
+Like C<file_contents_eq()>, only in the event of failure, the diagnostics will
+contain a diff instead of the full contents of the file. This can make it
+easier to test the contents of very large text files, and where only a subset
+of the lines are different. Supported L<options|/Options>:
+
+=over
+
+=item C<encoding>
+
+=item C<style>
+
+=item C<context>
+
+=back
+
+=cut
+
+sub file_contents_eq_or_diff {
+    my ($file, $want, $desc, $opts) = @_;
+    ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
+    my $fn = $file =~ m{/} ? File::Spec->catfile(split m{/}, $file) : $file;
+    $desc ||= "$file contents equal to string";
+
+    my $have = _slurp($fn, $opts->{encoding});
+    if (defined $have) {
+        return $Test->ok($have eq $want, $desc) || $Test->diag(
+            diff \$have, \$want, {
+                CONTEXT     => $opts->{context},
+                STYLE       => $opts->{style},
+                FILENAME_A  => $file,
+                FILENAME_B  => "Want",
+            }
+        );
+    } else {
+        return $Test->ok(0, $desc)
+            || $Test->diag("    Could not open file $file: $!");
+    }
+}
 
 =head3 file_contents_ne
 

@@ -7,6 +7,7 @@ Revision history for Test-File-Contents
       - Significant refactoring; only visible change should be that the
         actualy MD5 checksum will no longer be included in the `file_md5sum`
         failure diagnostics.
+      - Added `file_contents_eq_or_diff()`.
 
 0.10  2011-02-18
       - Maintainership taken by David E. Wheeler.

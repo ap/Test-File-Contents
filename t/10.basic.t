@@ -1,6 +1,6 @@
 #!/usr/bin/env perl -w
 
-use Test::More tests => 52;
+use Test::More tests => 59;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -302,3 +302,63 @@ test_test("file_contents_identical works with Big5 decoding");
 test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
 file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => ':raw' });
 test_test("file_contents_identical works with :raw decoding");
+
+# ===============================================================
+# Tests for file_contents_eq_or_diff
+# ===============================================================
+
+ok(defined(&file_contents_eq_or_diff),"function 'file_contents_eq_or_diff' exported");
+test_out("ok 1 - aaa test");
+file_contents_eq_or_diff("t/data/aaa.txt", "aaa\n", "aaa test");
+test_test("file_contents_eq_or_diff works when correct");
+
+test_out("ok 1 - t/data/aaa.txt contents equal to string");
+file_contents_eq_or_diff("t/data/aaa.txt", "aaa\n");
+test_test("works when correct with default description");
+
+test_out("not ok 1 - t/data/aaa.txt contents equal to string");
+test_fail(+8);
+test_diag(
+    '--- t/data/aaa.txt',
+    '+++ Want',
+    '@@ -1 +1 @@',
+    '-aaa',
+    '+bbb',
+);
+file_contents_eq_or_diff("t/data/aaa.txt", "bbb");
+test_test("file_contents_eq_or_diff works when incorrect");
+
+# Try different diff style.
+test_out("not ok 1 - t/data/aaa.txt contents equal to string");
+test_fail(+10);
+test_diag(
+    '*** t/data/aaa.txt',
+    '--- Want',
+    '***************',
+    '*** 1 ****',
+    '! aaa',
+    '--- 1 ----',
+    '! bbb',
+);
+file_contents_eq_or_diff("t/data/aaa.txt", "bbb", { style => 'Context' });
+test_test("file_contents_eq_or_diff diagnostics use context");
+
+# Try an encoded file.
+UTF8: {
+    use utf8;
+    test_out("ok 1 - t/data/utf8.txt contents equal to string");
+    file_contents_eq_or_diff('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+    test_test("file_contents_eq_or_diff works with UTF-8 encoding");
+
+    # Should fail if the encoding is wrong.
+    test_out("not ok 1 - t/data/utf8.txt contents equal to string");
+    test_fail(+7);
+    test_diag(
+        '--- t/data/utf8.txt',
+        '+++ Want',
+        '@@ -1 +1 @@',
+        '-疇疇疇+ååå',
+    );
+    file_contents_eq_or_diff('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
+    test_test("file_contents_eq works with Big5 encoding");
+}

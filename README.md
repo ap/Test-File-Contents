@@ -29,9 +29,11 @@ Dependencies
 
 Test::File::Contents requires the following modules:
 
+* Perl 5.6.2
 * Test::Builder
 * Digset::MD5
 * File::Spec
+* Text::Diff
 
 Copyright and Licence
 ---------------------
