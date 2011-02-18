@@ -3,7 +3,7 @@ package Test::File::Contents;
 use warnings;
 use strict;
 
-=head1 NAME
+=head1 Name
 
 Test::File::Contents - Test routines for examining the contents of files
 
@@ -23,27 +23,32 @@ use Digest::MD5;
 use File::Spec;
 my $Test = Test::Builder->new();
 
-=head1 SYNOPSIS
+=head1 Synopsis
 
     use Test::File::Contents;
 
-    file_contents_is       ($file,  $string,  $test_description);
-    file_contents_like     ($file,  qr/foo/,  $test_description);
-    file_md5sum            ($file,  $md5sum,  $test_description);
-    file_contents_identical($file1, $file2,   $test_description);
+  file_contents_is        $file,  $string,  $description;
+  file_contents_like      $file,  qr/foo/,  $description;
+  file_md5sum             $file,  $md5sum,  $description;
+  file_contents_identical $file1, $file2,   $description;
 
+=head1 Description
 
-=head1 FUNCTIONS
+Got an app that generates files? Then you need to test those files to make
+sure that their contents are correct. This module makes that easy. Use its
+test functions to make sure that the contents of files are exactly what you
+expect them to be.
 
-=head2 file_contents_is
+=head1 Interface
+
+=head2 Test Functions
+
+=head3 file_contents_is
+
+  file_contents_is $file, $string, $description;
 
 Checks for an exact match on the file's contents. Pass in a Unix-style file
 name and it will be converted for the local file system.
-
-Note: performs a dumb "eq" comparison, sucking the whole file into memory.
-
-Also note: I am aware of the grammatical confusion in the function name
-- got a better suggestion?
 
 =cut
 
@@ -57,15 +62,12 @@ sub file_contents_is {
     );
 }
 
-=head2 file_contents_isnt
+=head3 file_contents_isnt
 
-Checks that the file's contents do not match a string. Pass in a Unix-style file
-name and it will be converted for the local file system.
+  file_contents_isnt $file, $string, $description;
 
-Note: performs a dumb "ne" comparison, sucking the whole file into memory.
-
-Also note: I am aware of the grammatical confusion in the function name
-- got a better suggestion?
+Checks that the file's contents do not match a string. Pass in a Unix-style
+file name and it will be converted for the local file system.
 
 =cut
 
@@ -79,12 +81,12 @@ sub file_contents_isnt {
     );
 }
 
-=head2 file_contents_like
+=head3 file_contents_like
 
-Checks for a regexp match against the file's contents. You must provide it
-with a qr// style regexp. Pass in a Unix-style file name and it will be
-converted for the local file system.
+  file_contents_like $file, qr/foo/, $description;
 
+Checks that the contents of a file match a regular expression. The regular
+expression must be passed as a regular expression object created by C<qr//>.
 
 =cut
 
@@ -98,11 +100,13 @@ sub file_contents_like {
     );
 }
 
-=head2 file_contents_unlike
+=head3 file_contents_unlike
 
-Checks for a regexp failed match against the file's contents. You must provide
-it with a qr// style regexp. Pass in a Unix-style file name and it will be
-converted for the local file system.
+  file_contents_unlike $file, qr/foo/, $description;
+
+Checks that the contents of a file I<do not> match a regular expression. The
+regular expression must be passed as a regular expression object created by
+C<qr//>.
 
 =cut
 
@@ -116,11 +120,13 @@ sub file_contents_unlike {
     );
 }
 
-=head2 file_md5sum
+=head3 file_md5sum
 
-Checks whether a file matches a given md5sum. The md5sum should be provided as
-a hex string, eg. "6df23dc03f9b54cc38a0fc1483df6e21". Pass in a Unix-style
-file name and it will be converted for the local file system.
+  file_md5sum $file,  $md5sum,  $description;
+
+Checks whether a file matches a given md5 checksum. The md5sum should be
+provided as a hex string, eg. "6df23dc03f9b54cc38a0fc1483df6e21". Pass in a
+Unix-style file name and it will be converted for the local file system.
 
 =cut
 
@@ -152,7 +158,9 @@ sub file_md5sum {
     }
 }
 
-=head2 file_contents_identical
+=head3 file_contents_identical
+
+  file_contents_identical $file1, $file2, $description;
 
 Tests that the contents of two files are identical. Pass in a Unix-style file
 name and it will be converted for the local file system.
@@ -220,28 +228,32 @@ sub _compare {
     }
 }
 
-=head1 AUTHOR
+1;
 
-Kirrily Robert, C<< <skud@cpan.org> >>
+=head1 Authors
 
-Contributors:
+=over
 
-David Wheeler, C<< <dwheeler@cpan.org> >>
+=item * Kirrily Robert <skud@cpan.org>
 
-=head1 BUGS
+=item * David E. Wheeler <david@kineticode.com>
 
-Please report any bugs or feature requests to
-C<bug-test-file-contents@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically
-be notified of progress on your bug as I make changes.
+=back
 
-=head1 COPYRIGHT & LICENSE
+=head1 Support
 
-Copyright 2004-2005 Kirrily Robert.
+This module is stored in an open L<GitHub
+repository|http://github.com/theory/test-file-contents/tree/>. Feel free to
+fork and contribute!
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+Please file bug reports via L<GitHub
+Issues|http://github.com/theory/test-file-contents/issues/> or by sending mail to
+L<bug-Test-File-Contents@rt.cpan.org|mailto:bug-Test-File-Contents@rt.cpan.org>.
 
-=cut
+=head1 Copyright and License
 
-1; # End of Test::File::Contents
+Copyright (c) 2004-2007 Kirrily Robert. Some Rights Reserved.
+Copyright (c) 2007-2011 David E. Wheeler. Some Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
