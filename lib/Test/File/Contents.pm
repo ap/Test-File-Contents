@@ -32,7 +32,7 @@ my $Test = Test::Builder->new;
 
 =head1 Synopsis
 
-    use Test::File::Contents;
+  use Test::File::Contents;
 
   file_contents_eq        $file,  $string,  $description;
   file_contents_like      $file,  qr/foo/,  $description;
@@ -137,9 +137,10 @@ sub file_contents_unlike($$;$) {
 
   file_md5sum $file, $md5sum, $description;
 
-Checks whether a file matches a given md5 checksum. The md5sum should be
-provided as a hex string, eg. "6df23dc03f9b54cc38a0fc1483df6e21". Pass in a
-Unix-style file name and it will be converted for the local file system.
+Checks whether a file matches a given MD5 checksum. The checksum should be
+provided as a hex string, for example, C<6df23dc03f9b54cc38a0fc1483df6e21>.
+Pass in a Unix-style file name and it will be converted for the local file
+system.
 
 =cut
 
