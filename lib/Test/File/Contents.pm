@@ -9,19 +9,24 @@ Test::File::Contents - Test routines for examining the contents of files
 
 =cut
 
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
-$VERSION = '0.10';
-
-use Exporter;                   # load the class
-@ISA         = qw(Exporter);    # set it as the base class
-@EXPORT      = qw(file_contents_is file_contents_isnt file_contents_like file_contents_unlike file_md5sum file_contents_identical);
-@EXPORT_OK   = qw();            # no other optional functions
-%EXPORT_TAGS = qw();            # no groups of functions
+our $VERSION = '0.10';
 
 use Test::Builder;
 use Digest::MD5;
 use File::Spec;
-my $Test = Test::Builder->new();
+
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT      = qw(
+    file_contents_is
+    file_contents_isnt
+    file_contents_like
+    file_contents_unlike
+    file_md5sum
+    file_contents_identical
+);
+
+my $Test = Test::Builder->new;
 
 =head1 Synopsis
 
