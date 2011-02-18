@@ -9,7 +9,7 @@ use Test::Builder::Tester;
 use Test::Builder::Tester::Color;
 
 # see if we can load the module okay
-BEGIN { use_ok "Test::File::Contents" }
+BEGIN { use_ok "Test::File::Contents" or die; }
 
 # ===============================================================
 # Tests for file_contents_is
