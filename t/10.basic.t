@@ -26,11 +26,10 @@ file_contents_is("t/data/aaa.txt", "aaa\n");
 test_test("works when correct with default text");
 
 test_out("not ok 1 - file contents match string");
-test_diag("File t/data/aaa.txt does not match 'bbb'");
-test_fail(+1);
+test_fail(+2);
+test_diag("    File t/data/aaa.txt does not match 'bbb'");
 file_contents_is("t/data/aaa.txt", "bbb");
 test_test("file_contents_is works when incorrect");
-
 
 # ===============================================================
 # Tests for file_contents_isnt
@@ -47,11 +46,10 @@ file_contents_isnt("t/data/aaa.txt", "bbb\n");
 test_test("works when incorrect with default text");
 
 test_out("not ok 1 - file contents do not match string");
-test_diag("File t/data/aaa.txt matches 'aaa\n# '");
-test_fail(+1);
+test_fail(+2);
+test_diag("    File t/data/aaa.txt matches 'aaa\n# '");
 file_contents_isnt("t/data/aaa.txt", "aaa\n");
 test_test("file_contents_isnt works when correct");
-
 
 # ===============================================================
 # Tests for file_contents_like
@@ -68,8 +66,8 @@ test_test("works when correct with default text");
 
 test_out("not ok 1 - file contents match regexp");
 my $regexp = qr/[xyz]/;
-test_diag("File t/data/aaa.txt does not match '$regexp'");
-test_fail(+1);
+test_fail(+2);
+test_diag("    File t/data/aaa.txt does not match '$regexp'");
 file_contents_like("t/data/aaa.txt", $regexp);
 test_test("works when incorrect");
 
@@ -88,8 +86,8 @@ test_test("works when incorrect with default text");
 
 test_out("not ok 1 - file contents do not match regexp");
 $regexp = qr/[abc]/;
-test_diag("File t/data/aaa.txt matches '$regexp'");
-test_fail(+1);
+test_fail(+2);
+test_diag("    File t/data/aaa.txt matches '$regexp'");
 file_contents_unlike("t/data/aaa.txt", $regexp);
 test_test("works when correct");
 
@@ -110,8 +108,8 @@ file_md5sum("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e");
 test_test("file_md5sum works when correct with default text");
 
 test_out("not ok 1 - file matches md5sum");
-test_diag("File t/data/aaa.txt has md5sum 5c9597f3c8245907ea71a89d9d39d08e not 0123456789abcdef0123456789abcdef");
-test_fail(+1);
+test_fail(+2);
+test_diag("    File t/data/aaa.txt has md5sum 5c9597f3c8245907ea71a89d9d39d08e not 0123456789abcdef0123456789abcdef");
 file_md5sum("t/data/aaa.txt", "0123456789abcdef0123456789abcdef");
 test_test("file_md5sum works when incorrect");
 
@@ -130,8 +128,7 @@ file_contents_identical("t/data/aaa.txt", "t/data/aaa2.txt");
 test_test("file_contents_identical works when correct with default text");
 
 test_out("not ok 1 - file contents identical");
-test_diag("Files t/data/aaa.txt and t/data/bbb.txt are not identical.");
-test_fail(+1);
+test_fail(+2);
+test_diag("    Files t/data/aaa.txt and t/data/bbb.txt are not identical.");
 file_contents_identical("t/data/aaa.txt", "t/data/bbb.txt");
 test_test("file_contents_identical works when incorrect");
-

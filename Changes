@@ -4,6 +4,8 @@ Revision history for Test-File-Contents
       - Maintainership taken by David E. Wheeler.
       - Removed `examples/simple.pl`, since it wouldn't run anyway.
       - Added prototypes to the test functions.
+      - Failure diagnostics now appear after the failure message, rather than
+        before.
 
 0.05    2007-03-20
       - Packaging fixes. No functional changes.

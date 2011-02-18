@@ -151,14 +151,14 @@ sub file_md5sum($$;$) {
             $Test->ok(1, $desc);
             return 1;
         } else {
-            $Test->diag("File $file has md5sum " . $result . " not $md5sum");
             $Test->ok(0, $desc);
+            $Test->diag("    File $file has md5sum " . $result . " not $md5sum");
             return 0;
         }
         close IN;
     } else {
-        $Test->diag("Could not open file $file: $!");
         $Test->ok(0, $desc);
+        $Test->diag("Could not open file $file: $!");
         return 0;
     }
 }
@@ -192,18 +192,18 @@ sub file_contents_identical($$;$) {
                 $Test->ok(1, $desc);
                 return 1;
             } else {
-                $Test->diag("Files $file1 and $file2 are not identical.");
                 $Test->ok(0, $desc);
+                $Test->diag("    Files $file1 and $file2 are not identical.");
                 return 0;
             }
         } else {
-            $Test->diag("Could not open file $file1: $!");
             $Test->ok(0, $desc);
+            $Test->diag("    Could not open file $file1: $!");
             return 0;
         }
     } else {
-        $Test->diag("Could not open file $file2: $!");
         $Test->ok(0, $desc);
+        $Test->diag("    Could not open file $file2: $!");
         return 0;
     }
 }
@@ -222,13 +222,13 @@ sub _compare {
             $Test->ok(1, $desc);
             return 1;
         } else {
-            $Test->diag($err);
             $Test->ok(0, $desc);
+            $Test->diag("    $err");
             return 0;
         }
     } else {
-        $Test->diag("Could not open file $file: $!");
         $Test->ok(0, $desc);
+        $Test->diag("    Could not open file $file: $!");
         return 0;
     }
 }
