@@ -3,6 +3,7 @@ Revision history for Test-File-Contents
 0.10
       - Maintainership taken by David E. Wheeler.
       - Removed `examples/simple.pl`, since it wouldn't run anyway.
+      - Added prototypes to the test functions.
 
 0.05    2007-03-20
       - Packaging fixes. No functional changes.

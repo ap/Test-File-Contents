@@ -57,7 +57,7 @@ name and it will be converted for the local file system.
 
 =cut
 
-sub file_contents_is {
+sub file_contents_is($$;$) {
     my ($file, $string, $desc) = @_;
     return _compare(
         $file,
@@ -76,7 +76,7 @@ file name and it will be converted for the local file system.
 
 =cut
 
-sub file_contents_isnt {
+sub file_contents_isnt($$;$) {
     my ($file, $string, $desc) = @_;
     return _compare(
         $file,
@@ -95,7 +95,7 @@ expression must be passed as a regular expression object created by C<qr//>.
 
 =cut
 
-sub file_contents_like {
+sub file_contents_like($$;$) {
     my ($file, $regexp, $desc) = @_;
     return _compare(
         $file,
@@ -115,7 +115,7 @@ C<qr//>.
 
 =cut
 
-sub file_contents_unlike {
+sub file_contents_unlike($$;$) {
     my ($file, $regexp, $desc) = @_;
     return _compare(
         $file,
@@ -135,7 +135,7 @@ Unix-style file name and it will be converted for the local file system.
 
 =cut
 
-sub file_md5sum {
+sub file_md5sum($$;$) {
     my $file = $_[0] =~ m{/}
         ? File::Spec->catfile(split m{/}, shift)
         : shift;
@@ -172,7 +172,7 @@ name and it will be converted for the local file system.
 
 =cut
 
-sub file_contents_identical {
+sub file_contents_identical($$;$) {
     my $file1 = $_[0] =~ m{/}
         ? File::Spec->catfile(split m{/}, shift)
         : shift;
