@@ -18,6 +18,8 @@ use File::Spec;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT      = qw(
+    file_contents_eq
+    file_contents_ne
     file_contents_is
     file_contents_isnt
     file_contents_like
@@ -32,7 +34,7 @@ my $Test = Test::Builder->new;
 
     use Test::File::Contents;
 
-  file_contents_is        $file,  $string,  $description;
+  file_contents_eq        $file,  $string,  $description;
   file_contents_like      $file,  qr/foo/,  $description;
   file_md5sum             $file,  $md5sum,  $description;
   file_contents_identical $file1, $file2,   $description;
@@ -48,16 +50,17 @@ expect them to be.
 
 =head2 Test Functions
 
-=head3 file_contents_is
+=head3 file_contents_eq
 
-  file_contents_is $file, $string, $description;
+  file_contents_eq $file, $string, $description;
 
 Checks for an exact match on the file's contents. Pass in a Unix-style file
-name and it will be converted for the local file system.
+name and it will be converted for the local file system. The old name for this
+function, C<file_contents_is>, remains as an alias.
 
 =cut
 
-sub file_contents_is($$;$) {
+sub file_contents_eq($$;$) {
     my ($file, $string, $desc) = @_;
     return _compare(
         $file,
@@ -67,16 +70,19 @@ sub file_contents_is($$;$) {
     );
 }
 
-=head3 file_contents_isnt
+*file_contents_is = \&file_contents_eq;
 
-  file_contents_isnt $file, $string, $description;
+=head3 file_contents_ne
+
+  file_contents_ne $file, $string, $description;
 
 Checks that the file's contents do not match a string. Pass in a Unix-style
-file name and it will be converted for the local file system.
+file name and it will be converted for the local file system. The old name for
+this function, C<file_contents_isnt>, remains as an alias.
 
 =cut
 
-sub file_contents_isnt($$;$) {
+sub file_contents_ne($$;$) {
     my ($file, $string, $desc) = @_;
     return _compare(
         $file,
@@ -85,6 +91,8 @@ sub file_contents_isnt($$;$) {
         "File $file matches '$string'",
     );
 }
+
+*file_contents_isnt = \&file_contents_ne;
 
 =head3 file_contents_like
 

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use Test::More tests => 25;
+use Test::More tests => 33;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -10,6 +10,46 @@ use Test::Builder::Tester::Color;
 
 # see if we can load the module okay
 BEGIN { use_ok "Test::File::Contents" or die; }
+
+# ===============================================================
+# Tests for file_contents_eq
+# ===============================================================
+
+ok(defined(&file_contents_eq),       "function 'file_contents_eq' exported");
+
+test_out("ok 1 - aaa test");
+file_contents_eq("t/data/aaa.txt", "aaa\n", "aaa test");
+test_test("file_contents_eq works when correct");
+
+test_out("ok 1 - file contents match string");
+file_contents_eq("t/data/aaa.txt", "aaa\n");
+test_test("works when correct with default text");
+
+test_out("not ok 1 - file contents match string");
+test_fail(+2);
+test_diag("    File t/data/aaa.txt does not match 'bbb'");
+file_contents_eq("t/data/aaa.txt", "bbb");
+test_test("file_contents_eq works when incorrect");
+
+# ===============================================================
+# Tests for file_contents_ne
+# ===============================================================
+
+ok(defined(&file_contents_ne),     "function 'file_contents_ne' exported");
+
+test_out("ok 1 - bbb test");
+file_contents_ne("t/data/aaa.txt", "bbb\n", "bbb test");
+test_test("file_contents_ne works when incorrect"); # XXX Ugh.
+
+test_out("ok 1 - file contents do not match string");
+file_contents_ne("t/data/aaa.txt", "bbb\n");
+test_test("works when incorrect with default text");
+
+test_out("not ok 1 - file contents do not match string");
+test_fail(+2);
+test_diag("    File t/data/aaa.txt matches 'aaa\n# '");
+file_contents_ne("t/data/aaa.txt", "aaa\n");
+test_test("file_contents_ne works when correct");
 
 # ===============================================================
 # Tests for file_contents_is

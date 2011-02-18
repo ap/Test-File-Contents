@@ -6,6 +6,9 @@ Revision history for Test-File-Contents
       - Added prototypes to the test functions.
       - Failure diagnostics now appear after the failure message, rather than
         before.
+      - Renamed `file_contents_is` and `file_contents_isnt` to
+        `file_contents_eq` and `file_contents_ne`, respectively. The old names
+        remain as aliases for backwards compatibility.
 
 0.05    2007-03-20
       - Packaging fixes. No functional changes.
