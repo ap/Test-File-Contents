@@ -1,0 +1,7 @@
+_build
+blib
+Test-File-Contents-*
+MANIFEST
+MANIFEST.bak
+META.*
+Build
