@@ -9,6 +9,9 @@ Revision history for Test-File-Contents
       - Renamed `file_contents_is` and `file_contents_isnt` to
         `file_contents_eq` and `file_contents_ne`, respectively. The old names
         remain as aliases for backwards compatibility.
+      - Reworked default test descriptions to include the names of the files
+        being tested.
+      - Wordsmithed some of the diagnostic messages.
 
 0.05    2007-03-20
       - Packaging fixes. No functional changes.

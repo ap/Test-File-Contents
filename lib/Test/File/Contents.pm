@@ -17,7 +17,7 @@ use File::Spec;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT      = qw(
+our @EXPORT = qw(
     file_contents_eq
     file_contents_ne
     file_contents_is
@@ -54,9 +54,9 @@ expect them to be.
 
   file_contents_eq $file, $string, $description;
 
-Checks for an exact match on the file's contents. Pass in a Unix-style file
-name and it will be converted for the local file system. The old name for this
-function, C<file_contents_is>, remains as an alias.
+Checks that the file's contents are equal to a string. Pass in a Unix-style
+file name and it will be converted for the local file system. The old name for
+this function, C<file_contents_is>, remains as an alias.
 
 =cut
 
@@ -65,8 +65,8 @@ sub file_contents_eq($$;$) {
     return _compare(
         $file,
         sub { shift eq $string },
-        $desc || 'file contents match string',
-        "File $file does not match '$string'",
+        $desc || "$file contents equal to string",
+        "File $file contents not equal to '$string'",
     );
 }
 
@@ -76,7 +76,7 @@ sub file_contents_eq($$;$) {
 
   file_contents_ne $file, $string, $description;
 
-Checks that the file's contents do not match a string. Pass in a Unix-style
+Checks that the file's contents do not equal a string. Pass in a Unix-style
 file name and it will be converted for the local file system. The old name for
 this function, C<file_contents_isnt>, remains as an alias.
 
@@ -87,8 +87,8 @@ sub file_contents_ne($$;$) {
     return _compare(
         $file,
         sub { shift ne $string },
-        $desc || 'file contents do not match string',
-        "File $file matches '$string'",
+        $desc || "$file contents not equal to string",
+        "File $file contents equal to '$string'",
     );
 }
 
@@ -104,12 +104,12 @@ expression must be passed as a regular expression object created by C<qr//>.
 =cut
 
 sub file_contents_like($$;$) {
-    my ($file, $regexp, $desc) = @_;
+    my ($file, $regex, $desc) = @_;
     return _compare(
         $file,
-        sub { shift =~ /$regexp/ },
-        $desc || 'file contents match regexp',
-        "File $file does not match '$regexp'",
+        sub { shift =~ /$regex/ },
+        $desc || "$file contents match regex",
+        "File $file contents do not match /$regex/",
     );
 }
 
@@ -124,18 +124,18 @@ C<qr//>.
 =cut
 
 sub file_contents_unlike($$;$) {
-    my ($file, $regexp, $desc) = @_;
+    my ($file, $regex, $desc) = @_;
     return _compare(
         $file,
-        sub { shift !~ /$regexp/ },
-        $desc || 'file contents do not match regexp',
-        "File $file matches '$regexp'",
+        sub { shift !~ /$regex/ },
+        $desc || "$file contents do not match regex",
+        "File $file contents match /$regex/",
     );
 }
 
 =head3 file_md5sum
 
-  file_md5sum $file,  $md5sum,  $description;
+  file_md5sum $file, $md5sum, $description;
 
 Checks whether a file matches a given md5 checksum. The md5sum should be
 provided as a hex string, eg. "6df23dc03f9b54cc38a0fc1483df6e21". Pass in a
@@ -144,11 +144,12 @@ Unix-style file name and it will be converted for the local file system.
 =cut
 
 sub file_md5sum($$;$) {
-    my $file = $_[0] =~ m{/}
-        ? File::Spec->catfile(split m{/}, shift)
-        : shift;
+    my $arg_file = shift;
+    my $file = $arg_file =~ m{/}
+        ? File::Spec->catfile(split m{/}, $arg_file)
+        : $arg_file;
     my ($md5sum, $desc) = @_;
-    $desc ||= "file matches md5sum";
+    $desc ||= "$arg_file has md5sum";
     local *IN;
     if (open IN, $file) {
         my $ctx = undef;
@@ -160,13 +161,13 @@ sub file_md5sum($$;$) {
             return 1;
         } else {
             $Test->ok(0, $desc);
-            $Test->diag("    File $file has md5sum " . $result . " not $md5sum");
+            $Test->diag("    File $arg_file has md5sum $result, not $md5sum");
             return 0;
         }
         close IN;
     } else {
         $Test->ok(0, $desc);
-        $Test->diag("Could not open file $file: $!");
+        $Test->diag("    Could not open file $file: $!");
         return 0;
     }
 }
@@ -181,13 +182,10 @@ name and it will be converted for the local file system.
 =cut
 
 sub file_contents_identical($$;$) {
-    my $file1 = $_[0] =~ m{/}
-        ? File::Spec->catfile(split m{/}, shift)
-        : shift;
-    my $file2 = $_[0] =~ m{/}
-        ? File::Spec->catfile(split m{/}, shift)
-        : shift;
-    my $desc = shift || 'file contents identical';
+    my ($f1, $f2) = (shift, shift);
+    my $file1 = $f1 =~ m{/} ? File::Spec->catfile(split m{/}, $f1) : $f1;
+    my $file2 = $f2 =~ m{/} ? File::Spec->catfile(split m{/}, $f2) : $f2;
+    my $desc = shift || "$f1 and $f2 contents identical";
 
     my $ok;
     local(*IN1, *IN2);
@@ -201,7 +199,7 @@ sub file_contents_identical($$;$) {
                 return 1;
             } else {
                 $Test->ok(0, $desc);
-                $Test->diag("    Files $file1 and $file2 are not identical.");
+                $Test->diag("    Files $f1 and $f2 are not identical.");
                 return 0;
             }
         } else {

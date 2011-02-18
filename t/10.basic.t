@@ -21,13 +21,13 @@ test_out("ok 1 - aaa test");
 file_contents_eq("t/data/aaa.txt", "aaa\n", "aaa test");
 test_test("file_contents_eq works when correct");
 
-test_out("ok 1 - file contents match string");
+test_out("ok 1 - t/data/aaa.txt contents equal to string");
 file_contents_eq("t/data/aaa.txt", "aaa\n");
 test_test("works when correct with default text");
 
-test_out("not ok 1 - file contents match string");
+test_out("not ok 1 - t/data/aaa.txt contents equal to string");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt does not match 'bbb'");
+test_diag("    File t/data/aaa.txt contents not equal to 'bbb'");
 file_contents_eq("t/data/aaa.txt", "bbb");
 test_test("file_contents_eq works when incorrect");
 
@@ -41,13 +41,13 @@ test_out("ok 1 - bbb test");
 file_contents_ne("t/data/aaa.txt", "bbb\n", "bbb test");
 test_test("file_contents_ne works when incorrect"); # XXX Ugh.
 
-test_out("ok 1 - file contents do not match string");
+test_out("ok 1 - t/data/aaa.txt contents not equal to string");
 file_contents_ne("t/data/aaa.txt", "bbb\n");
 test_test("works when incorrect with default text");
 
-test_out("not ok 1 - file contents do not match string");
+test_out("not ok 1 - t/data/aaa.txt contents not equal to string");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt matches 'aaa\n# '");
+test_diag("    File t/data/aaa.txt contents equal to 'aaa\n# '");
 file_contents_ne("t/data/aaa.txt", "aaa\n");
 test_test("file_contents_ne works when correct");
 
@@ -61,13 +61,13 @@ test_out("ok 1 - aaa test");
 file_contents_is("t/data/aaa.txt", "aaa\n", "aaa test");
 test_test("file_contents_is works when correct");
 
-test_out("ok 1 - file contents match string");
+test_out("ok 1 - t/data/aaa.txt contents equal to string");
 file_contents_is("t/data/aaa.txt", "aaa\n");
 test_test("works when correct with default text");
 
-test_out("not ok 1 - file contents match string");
+test_out("not ok 1 - t/data/aaa.txt contents equal to string");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt does not match 'bbb'");
+test_diag("    File t/data/aaa.txt contents not equal to 'bbb'");
 file_contents_is("t/data/aaa.txt", "bbb");
 test_test("file_contents_is works when incorrect");
 
@@ -81,13 +81,13 @@ test_out("ok 1 - bbb test");
 file_contents_isnt("t/data/aaa.txt", "bbb\n", "bbb test");
 test_test("file_contents_isnt works when incorrect"); # XXX Ugh.
 
-test_out("ok 1 - file contents do not match string");
+test_out("ok 1 - t/data/aaa.txt contents not equal to string");
 file_contents_isnt("t/data/aaa.txt", "bbb\n");
 test_test("works when incorrect with default text");
 
-test_out("not ok 1 - file contents do not match string");
+test_out("not ok 1 - t/data/aaa.txt contents not equal to string");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt matches 'aaa\n# '");
+test_diag("    File t/data/aaa.txt contents equal to 'aaa\n# '");
 file_contents_isnt("t/data/aaa.txt", "aaa\n");
 test_test("file_contents_isnt works when correct");
 
@@ -100,14 +100,14 @@ test_out("ok 1 - aaa regexp test");
 file_contents_like("t/data/aaa.txt", qr/[abc]/, "aaa regexp test");
 test_test("works when correct");
 
-test_out("ok 1 - file contents match regexp");
+test_out("ok 1 - t/data/aaa.txt contents match regex");
 file_contents_like("t/data/aaa.txt", qr/[abc]/);
 test_test("works when correct with default text");
 
-test_out("not ok 1 - file contents match regexp");
+test_out("not ok 1 - t/data/aaa.txt contents match regex");
 my $regexp = qr/[xyz]/;
 test_fail(+2);
-test_diag("    File t/data/aaa.txt does not match '$regexp'");
+test_diag("    File t/data/aaa.txt contents do not match /$regexp/");
 file_contents_like("t/data/aaa.txt", $regexp);
 test_test("works when incorrect");
 
@@ -120,14 +120,14 @@ test_out("ok 1 - xyz regexp test");
 file_contents_unlike("t/data/aaa.txt", qr/[xyz]/, "xyz regexp test");
 test_test("works when incorrect");
 
-test_out("ok 1 - file contents do not match regexp");
+test_out("ok 1 - t/data/aaa.txt contents do not match regex");
 file_contents_unlike("t/data/aaa.txt", qr/[xyz]/);
 test_test("works when incorrect with default text");
 
-test_out("not ok 1 - file contents do not match regexp");
+test_out("not ok 1 - t/data/aaa.txt contents do not match regex");
 $regexp = qr/[abc]/;
 test_fail(+2);
-test_diag("    File t/data/aaa.txt matches '$regexp'");
+test_diag("    File t/data/aaa.txt contents match /$regexp/");
 file_contents_unlike("t/data/aaa.txt", $regexp);
 test_test("works when correct");
 
@@ -143,13 +143,13 @@ test_out("ok 1 - aaa md5sum test");
 file_md5sum("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e", "aaa md5sum test");
 test_test("file_md5sum works when correct");
 
-test_out("ok 1 - file matches md5sum");
+test_out("ok 1 - t/data/aaa.txt has md5sum");
 file_md5sum("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e");
 test_test("file_md5sum works when correct with default text");
 
-test_out("not ok 1 - file matches md5sum");
+test_out("not ok 1 - t/data/aaa.txt has md5sum");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt has md5sum 5c9597f3c8245907ea71a89d9d39d08e not 0123456789abcdef0123456789abcdef");
+test_diag("    File t/data/aaa.txt has md5sum 5c9597f3c8245907ea71a89d9d39d08e, not 0123456789abcdef0123456789abcdef");
 file_md5sum("t/data/aaa.txt", "0123456789abcdef0123456789abcdef");
 test_test("file_md5sum works when incorrect");
 
@@ -163,11 +163,11 @@ test_out("ok 1 - aaa identical test");
 file_contents_identical("t/data/aaa.txt", "t/data/aaa2.txt", "aaa identical test");
 test_test("file_contents_identical works when correct");
 
-test_out("ok 1 - file contents identical");
+test_out("ok 1 - t/data/aaa.txt and t/data/aaa2.txt contents identical");
 file_contents_identical("t/data/aaa.txt", "t/data/aaa2.txt");
 test_test("file_contents_identical works when correct with default text");
 
-test_out("not ok 1 - file contents identical");
+test_out("not ok 1 - t/data/aaa.txt and t/data/bbb.txt contents identical");
 test_fail(+2);
 test_diag("    Files t/data/aaa.txt and t/data/bbb.txt are not identical.");
 file_contents_identical("t/data/aaa.txt", "t/data/bbb.txt");
