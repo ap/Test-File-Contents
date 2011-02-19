@@ -1,4 +1,4 @@
-Test/File/Contents 0.11
+Test/File/Contents 0.20
 =======================
 
 This library's module, Test::File::Contents, provides an interface for testing
