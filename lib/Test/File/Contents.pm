@@ -1,6 +1,6 @@
 package Test::File::Contents;
 
-use 5.6.2;
+use 5.8.3;
 use warnings;
 use strict;
 
