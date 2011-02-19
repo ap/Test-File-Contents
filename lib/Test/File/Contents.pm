@@ -47,7 +47,8 @@ my $Test = Test::Builder->new;
   file_contents_eq_or_diff $file,  $string,  $description;
   file_contents_like       $file,  qr/foo/,  $description;
   file_md5sum_is           $file,  $md5sum,  $description;
-  files_eq  $file1, $file2,   $description;
+  files_eq                 $file1, $file2,   $description;
+  files_eq_or_diff         $file1, $file2,   $description;
 
 =head1 Description
 
@@ -337,7 +338,7 @@ sub file_md5sum_is($$;$$) {
   files_eq $file1, $file2, { encoding => 'UTF-8' };
   files_eq $file1, $file2, { encoding => ':bytes' }, $description;
 
-Tests that the contents of two files are identical. Pass in a Unix-style file
+Tests that the contents of two files are the same. Pass in a Unix-style file
 name and it will be converted for the local file system. Supported
 L<options|/Options>:
 
@@ -357,7 +358,7 @@ alias.
 sub files_eq($$;$$) {
     my ($f1, $f2, $desc, $opts) = @_;
     @_ = ($f1, $f2, $desc, $opts, sub {
-        "    Files $f1 and $f2 are not identical."
+        "    Files $f1 and $f2 are not the same."
     });
     goto &_files_eq;
 }
@@ -368,9 +369,9 @@ sub files_eq($$;$$) {
   files_eq_or_diff $file1, $file2, { encoding => 'UTF-8' };
   files_eq_or_diff $file1, $file2, { style    => 'context' }, $description;
 
-Like C<files_eq()>, this function tests that the contents of two files are
-identical. Unlike C<files_eq()>, on failure this function outputs a diff of
-the two files in the diagnostics. Supported L<options|/Options>:
+Like C<files_eq()>, this function tests that the contents of two files are the
+same. Unlike C<files_eq()>, on failure this function outputs a diff of the two
+files in the diagnostics. Supported L<options|/Options>:
 
 =over
 
@@ -401,7 +402,6 @@ sub files_eq_or_diff($$;$$) {
 sub _files_eq {
     my ($f1, $f2, $desc, $opts, $diag) = @_;
     ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
-    $desc ||= "$f1 and $f2 contents identical";
 
     my @contents;
     for my $f ($f1, $f2) {
@@ -414,7 +414,7 @@ sub _files_eq {
 
     return $Test->ok(
         $contents[0] eq $contents[1],
-        $desc || "$f1 and $f2 contents identical",
+        $desc || "$f1 and $f2 contents are the same",
     ) || $Test->diag($diag->());
 }
 
