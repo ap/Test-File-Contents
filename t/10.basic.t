@@ -1,6 +1,6 @@
 #!/usr/bin/env perl -w
 
-use Test::More tests => 60;
+use Test::More tests => 61;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -269,41 +269,44 @@ test_test("file_md5sum_is fails on decoded utf8 file");
 is \&file_md5sum, \&file_md5sum, 'Function file_md5sum should alias to file_md5sum_is';
 
 # ===============================================================
-# Tests for file_contents_identical
+# Tests for files_eq
 # ===============================================================
 
-ok(defined(&file_contents_identical),"function 'file_contents_identical' exported");
+ok(defined(&files_eq),"function 'files_eq' exported");
 
 test_out("ok 1 - aaa identical test");
-file_contents_identical("t/data/aaa.txt", "t/data/aaa2.txt", "aaa identical test");
-test_test("file_contents_identical works when correct");
+files_eq("t/data/aaa.txt", "t/data/aaa2.txt", "aaa identical test");
+test_test("files_eq works when correct");
 
 test_out("ok 1 - t/data/aaa.txt and t/data/aaa2.txt contents identical");
-file_contents_identical("t/data/aaa.txt", "t/data/aaa2.txt");
-test_test("file_contents_identical works when correct with default text");
+files_eq("t/data/aaa.txt", "t/data/aaa2.txt");
+test_test("files_eq works when correct with default text");
 
 test_out("not ok 1 - t/data/aaa.txt and t/data/bbb.txt contents identical");
 test_fail(+2);
 test_diag("    Files t/data/aaa.txt and t/data/bbb.txt are not identical.");
-file_contents_identical("t/data/aaa.txt", "t/data/bbb.txt");
-test_test("file_contents_identical works when incorrect");
+files_eq("t/data/aaa.txt", "t/data/bbb.txt");
+test_test("files_eq works when incorrect");
 
 # With encoding.
 test_out("ok 1 - whatever");
-file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => 'UTF-8' }, 'whatever');
-test_test("file_contents_identical works with UTF-8 decoding");
+files_eq('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => 'UTF-8' }, 'whatever');
+test_test("files_eq works with UTF-8 decoding");
 
 test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
-file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt');
-test_test("file_contents_identical works without UTF-8 decoding");
+files_eq('t/data/utf8.txt', 't/data/utf8-2.txt');
+test_test("files_eq works without UTF-8 decoding");
 
 test_out("ok 1 - whatever");
-file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', 'whatever', { encoding => 'Big5' });
-test_test("file_contents_identical works with Big5 decoding");
+files_eq('t/data/utf8.txt', 't/data/utf8-2.txt', 'whatever', { encoding => 'Big5' });
+test_test("files_eq works with Big5 decoding");
 
 test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
-file_contents_identical('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => ':raw' });
-test_test("file_contents_identical works with :raw decoding");
+files_eq('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => ':raw' });
+test_test("files_eq works with :raw decoding");
+
+is \&file_contents_identical, \&files_eq,
+    'Function file_contents_identical should alias to files_eq';
 
 # ===============================================================
 # Tests for file_contents_eq_or_diff

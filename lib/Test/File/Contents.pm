@@ -25,12 +25,14 @@ our @EXPORT = qw(
     file_contents_eq
     file_contents_eq_or_diff
     file_contents_ne
-    file_contents_is
-    file_contents_isnt
     file_contents_like
     file_contents_unlike
-    file_md5sum
     file_md5sum_is
+    files_eq
+
+    file_contents_is
+    file_contents_isnt
+    file_md5sum
     file_contents_identical
 );
 
@@ -44,7 +46,7 @@ my $Test = Test::Builder->new;
   file_contents_eq_or_diff $file,  $string,  $description;
   file_contents_like       $file,  qr/foo/,  $description;
   file_md5sum_is           $file,  $md5sum,  $description;
-  file_contents_identical  $file1, $file2,   $description;
+  files_eq  $file1, $file2,   $description;
 
 =head1 Description
 
@@ -330,11 +332,11 @@ sub file_md5sum_is($$;$$) {
 
 *file_md5sum = \&file_md5sum_is;
 
-=head3 file_contents_identical
+=head3 files_eq
 
-  file_contents_identical $file1, $file2, $description;
-  file_contents_identical $file1, $file2, { encoding => 'UTF-8' };
-  file_contents_identical $file1, $file2, { encoding => ':bytes' }, $description;
+  files_eq $file1, $file2, $description;
+  files_eq $file1, $file2, { encoding => 'UTF-8' };
+  files_eq $file1, $file2, { encoding => ':bytes' }, $description;
 
 Tests that the contents of two files are identical. Pass in a Unix-style file
 name and it will be converted for the local file system. Supported
@@ -346,9 +348,14 @@ L<options|/Options>:
 
 =back
 
+The old name for this function, C<file_contents_identical>, remains as an
+alias.
+
 =cut
 
-sub file_contents_identical($$;$$) {
+*file_contents_identical = \&files_eq;
+
+sub files_eq($$;$$) {
     my ($f1, $f2, $desc, $opts) = @_;
     ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
     $desc ||= "$f1 and $f2 contents identical";

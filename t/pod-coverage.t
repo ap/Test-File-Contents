@@ -5,5 +5,6 @@ all_pod_coverage_ok({
     also_private => [
         qr/^file_contents_is(?:nt)?$/,
         'file_md5sum',
+        'file_contents_identical',
     ]
 });
