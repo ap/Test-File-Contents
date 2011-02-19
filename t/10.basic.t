@@ -400,11 +400,13 @@ files_eq_or_diff('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => ':raw' })
 test_test("files_eq_or_diff works with :raw decoding");
 
 # Diagnostics.
+my $t1 = localtime +(stat( File::Spec->catfile(qw(t data aaa.txt)) ))[9];
+my $t2 = localtime +(stat( File::Spec->catfile(qw(t data bbb.txt)) ))[9];
 test_out("not ok 1 - t/data/aaa.txt and t/data/bbb.txt contents are the same");
 test_fail(+8);
 test_diag(
-    '--- t/data/aaa.txt	Fri Feb 18 09:54:53 2011',
-    '+++ t/data/bbb.txt	Fri Feb 18 09:54:53 2011',
+    "--- t/data/aaa.txt	$t1",
+    "+++ t/data/bbb.txt	$t2",
     '@@ -1 +1 @@',
     '-aaa',
     '+bbb',
@@ -414,15 +416,12 @@ test_test("files_eq_or_diff failure emits diff");
 
 # Try style.
 test_out("not ok 1 - t/data/aaa.txt and t/data/bbb.txt contents are the same");
-test_fail(+10);
+test_fail(+7);
 test_diag(
-    '*** t/data/aaa.txt	Fri Feb 18 09:54:53 2011',
-    '--- t/data/bbb.txt	Fri Feb 18 09:54:53 2011',
-    '***************',
-    '*** 1 ****',
-    '! aaa',
-    '--- 1 ----',
-    '! bbb',
+    '1c1',
+    '< aaa',
+    '---',
+    '> bbb',
 );
-files_eq_or_diff("t/data/aaa.txt", "t/data/bbb.txt", { style => 'Context' });
-test_test("files_eq_or_diff failure emits context diff");
+files_eq_or_diff("t/data/aaa.txt", "t/data/bbb.txt", { style => 'OldStyle' });
+test_test("files_eq_or_diff failure emits old style diff");
