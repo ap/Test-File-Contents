@@ -1,6 +1,6 @@
 #!/usr/bin/env perl -w
 
-use Test::More tests => 61;
+use Test::More tests => 70;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -367,3 +367,62 @@ UTF8: {
     file_contents_eq_or_diff('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
     test_test("file_contents_eq works with Big5 encoding");
 }
+
+# ===============================================================
+# Tests for files_eq_or_diff
+# ===============================================================
+
+ok(defined(&files_eq_or_diff),"function 'files_eq_or_diff' exported");
+
+test_out("ok 1 - aaa identical test");
+files_eq_or_diff("t/data/aaa.txt", "t/data/aaa2.txt", "aaa identical test");
+test_test("files_eq_or_diff works when correct");
+
+test_out("ok 1 - t/data/aaa.txt and t/data/aaa2.txt contents identical");
+files_eq_or_diff("t/data/aaa.txt", "t/data/aaa2.txt");
+test_test("files_eq_or_diff works when correct with default text");
+
+# With encoding.
+test_out("ok 1 - whatever");
+files_eq_or_diff('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => 'UTF-8' }, 'whatever');
+test_test("files_eq_or_diff works with UTF-8 decoding");
+
+test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
+files_eq_or_diff('t/data/utf8.txt', 't/data/utf8-2.txt');
+test_test("files_eq_or_diff works without UTF-8 decoding");
+
+test_out("ok 1 - whatever");
+files_eq_or_diff('t/data/utf8.txt', 't/data/utf8-2.txt', 'whatever', { encoding => 'Big5' });
+test_test("files_eq_or_diff works with Big5 decoding");
+
+test_out("ok 1 - t/data/utf8.txt and t/data/utf8-2.txt contents identical");
+files_eq_or_diff('t/data/utf8.txt', 't/data/utf8-2.txt', { encoding => ':raw' });
+test_test("files_eq_or_diff works with :raw decoding");
+
+# Diagnostics.
+test_out("not ok 1 - t/data/aaa.txt and t/data/bbb.txt contents identical");
+test_fail(+8);
+test_diag(
+    '--- t/data/aaa.txt	Fri Feb 18 09:54:53 2011',
+    '+++ t/data/bbb.txt	Fri Feb 18 09:54:53 2011',
+    '@@ -1 +1 @@',
+    '-aaa',
+    '+bbb',
+);
+files_eq_or_diff("t/data/aaa.txt", "t/data/bbb.txt");
+test_test("files_eq_or_diff failure emits diff");
+
+# Try style.
+test_out("not ok 1 - t/data/aaa.txt and t/data/bbb.txt contents identical");
+test_fail(+10);
+test_diag(
+    '*** t/data/aaa.txt	Fri Feb 18 09:54:53 2011',
+    '--- t/data/bbb.txt	Fri Feb 18 09:54:53 2011',
+    '***************',
+    '*** 1 ****',
+    '! aaa',
+    '--- 1 ----',
+    '! bbb',
+);
+files_eq_or_diff("t/data/aaa.txt", "t/data/bbb.txt", { style => 'Context' });
+test_test("files_eq_or_diff failure emits context diff");

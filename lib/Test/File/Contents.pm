@@ -29,6 +29,7 @@ our @EXPORT = qw(
     file_contents_unlike
     file_md5sum_is
     files_eq
+    files_eq_or_diff
 
     file_contents_is
     file_contents_isnt
@@ -178,7 +179,7 @@ of the lines are different. Supported L<options|/Options>:
 sub file_contents_eq_or_diff {
     my ($file, $want, $desc, $opts) = @_;
     ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
-    my $fn = $file =~ m{/} ? File::Spec->catfile(split m{/}, $file) : $file;
+    my $fn = _resolve($file);
     $desc ||= "$file contents equal to string";
 
     my $have = _slurp($fn, $opts->{encoding});
@@ -316,9 +317,7 @@ The old name for this function, C<file_md5sum>, remains as an alias.
 
 sub file_md5sum_is($$;$$) {
     my $arg_file = shift;
-    my $file = $arg_file =~ m{/}
-        ? File::Spec->catfile(split m{/}, $arg_file)
-        : $arg_file;
+    my $file = _resolve($arg_file);
     my ($md5sum, $desc, $opts) = @_;
     ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
     return _compare(
@@ -357,12 +356,56 @@ alias.
 
 sub files_eq($$;$$) {
     my ($f1, $f2, $desc, $opts) = @_;
+    @_ = ($f1, $f2, $desc, $opts, sub {
+        "    Files $f1 and $f2 are not identical."
+    });
+    goto &_files_eq;
+}
+
+=head3 files_eq_or_diff
+
+  files_eq_or_diff $file1, $file2, $description;
+  files_eq_or_diff $file1, $file2, { encoding => 'UTF-8' };
+  files_eq_or_diff $file1, $file2, { style    => 'context' }, $description;
+
+Like C<files_eq()>, this function tests that the contents of two files are
+identical. Unlike C<files_eq()>, on failure this function outputs a diff of
+the two files in the diagnostics. Supported L<options|/Options>:
+
+=over
+
+=item C<encoding>
+
+=item C<style>
+
+=item C<context>
+
+=back
+
+=cut
+
+sub files_eq_or_diff($$;$$) {
+    my ($f1, $f2, $desc, $opts) = @_;
+    ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
+    @_ = ($f1, $f2, $desc, $opts, sub {
+        diff _resolve($f1), _resolve($f2), {
+            CONTEXT     => $opts->{context},
+            STYLE       => $opts->{style},
+            FILENAME_A  => $f1,
+            FILENAME_B  => $f2,
+        };
+    });
+    goto &_files_eq;
+}
+
+sub _files_eq {
+    my ($f1, $f2, $desc, $opts, $diag) = @_;
     ($opts, $desc) = ($desc, $opts) if ref $desc eq 'HASH';
     $desc ||= "$f1 and $f2 contents identical";
 
     my @contents;
     for my $f ($f1, $f2) {
-        my $file = $f =~ m{/} ? File::Spec->catfile(split m{/}, $f) : $f;
+        my $file = _resolve($f);
         push @contents => _slurp($file, $opts->{encoding});
         next if defined $contents[-1];
         return $Test->ok(0, $desc)
@@ -372,13 +415,11 @@ sub files_eq($$;$$) {
     return $Test->ok(
         $contents[0] eq $contents[1],
         $desc || "$f1 and $f2 contents identical",
-    ) || $Test->diag("    Files $f1 and $f2 are not identical.");
+    ) || $Test->diag($diag->());
 }
 
 sub _compare {
-    my $file = $_[0] =~ m{/}
-        ? File::Spec->catfile(split m{/}, shift)
-        : shift;
+    my $file = _resolve(shift);
     my ($code, $opts, $desc, $err) = @_;
     local $Test::Builder::Level = 2;
     my $contents = _slurp($file, $opts->{encoding});
@@ -402,6 +443,9 @@ sub _slurp {
     return <$fh>;
 }
 
+sub _resolve {
+    $_[0] =~ m{/} ? File::Spec->catfile(split m{/}, shift) : shift;
+}
 
 1;
 
