@@ -1,5 +1,7 @@
 Revision history for Test-File-Contents
 
+0.21
+
 0.20    2011-02-18
       - Now require Perl 5.8.3 or higher. 5.8 has effectively been the
         required Perl all along thanks to the dependency on Digest::MD5.
