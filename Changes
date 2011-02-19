@@ -8,6 +8,8 @@ Revision history for Test-File-Contents
         actualy MD5 checksum will no longer be included in the `file_md5sum`
         failure diagnostics.
       - Added `file_contents_eq_or_diff()`.
+      - Renamed `file_md5sum` to `file_md5sum_is`. The old name remains as an
+        alias for backwards compatibility.
 
 0.10  2011-02-18
       - Maintainership taken by David E. Wheeler.

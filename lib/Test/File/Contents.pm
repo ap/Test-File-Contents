@@ -30,6 +30,7 @@ our @EXPORT = qw(
     file_contents_like
     file_contents_unlike
     file_md5sum
+    file_md5sum_is
     file_contents_identical
 );
 
@@ -42,7 +43,7 @@ my $Test = Test::Builder->new;
   file_contents_eq         $file,  $string,  $description;
   file_contents_eq_or_diff $file,  $string,  $description;
   file_contents_like       $file,  qr/foo/,  $description;
-  file_md5sum              $file,  $md5sum,  $description;
+  file_md5sum_is           $file,  $md5sum,  $description;
   file_contents_identical  $file1, $file2,   $description;
 
 =head1 Description
@@ -288,11 +289,11 @@ sub file_contents_unlike($$;$$) {
     );
 }
 
-=head3 file_md5sum
+=head3 file_md5sum_is
 
-  file_md5sum $file, $md5sum, $description;
-  file_md5sum $file, $md5sum, { encoding => 'UTF-8' };
-  file_md5sum $file, $md5sum, { encoding => ':bytes' }, $description;
+  file_md5sum_is $file, $md5sum, $description;
+  file_md5sum_is $file, $md5sum, { encoding => 'UTF-8' };
+  file_md5sum_is $file, $md5sum, { encoding => ':bytes' }, $description;
 
 Checks whether a file matches a given MD5 checksum. The checksum should be
 provided as a hex string, for example, C<6df23dc03f9b54cc38a0fc1483df6e21>.
@@ -307,9 +308,11 @@ Probably not useful unless left unset or set to C<:raw>.
 
 =back
 
+The old name for this function, C<file_md5sum>, remains as an alias.
+
 =cut
 
-sub file_md5sum($$;$$) {
+sub file_md5sum_is($$;$$) {
     my $arg_file = shift;
     my $file = $arg_file =~ m{/}
         ? File::Spec->catfile(split m{/}, $arg_file)
@@ -324,6 +327,8 @@ sub file_md5sum($$;$$) {
         "File $arg_file does not have md5 checksum $md5sum",
     );
 }
+
+*file_md5sum = \&file_md5sum_is;
 
 =head3 file_contents_identical
 

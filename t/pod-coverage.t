@@ -2,5 +2,8 @@ use Test::More;
 eval "use Test::Pod::Coverage 0.08";
 plan skip_all => "Test::Pod::Coverage 0.08 required for testing POD coverage" if $@;
 all_pod_coverage_ok({
-    also_private => [ qr/^file_contents_is(?:nt)?$/ ]
+    also_private => [
+        qr/^file_contents_is(?:nt)?$/,
+        'file_md5sum',
+    ]
 });

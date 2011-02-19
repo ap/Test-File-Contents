@@ -1,6 +1,6 @@
 #!/usr/bin/env perl -w
 
-use Test::More tests => 59;
+use Test::More tests => 60;
 use Test::Builder::Tester;
 
 # turn on coloured diagnostic mode if you have a colour terminal.
@@ -225,46 +225,48 @@ UTF8: {
 }
 
 # ===============================================================
-# Tests for file_md5sum
+# Tests for file_md5sum_is_is
 # ===============================================================
 
 # md5sum for t/data/aaa.txt is 5c9597f3c8245907ea71a89d9d39d08e
 
-ok(defined(&file_md5sum),"function 'file_md5sum' exported");
+ok(defined(&file_md5sum_is),"function 'file_md5sum_is' exported");
 
 test_out("ok 1 - aaa md5sum test");
-file_md5sum("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e", "aaa md5sum test");
-test_test("file_md5sum works when correct");
+file_md5sum_is("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e", "aaa md5sum test");
+test_test("file_md5sum_is works when correct");
 
 test_out("ok 1 - t/data/aaa.txt has md5sum");
-file_md5sum("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e");
-test_test("file_md5sum works when correct with default text");
+file_md5sum_is("t/data/aaa.txt", "5c9597f3c8245907ea71a89d9d39d08e");
+test_test("file_md5sum_is works when correct with default text");
 
 test_out("not ok 1 - t/data/aaa.txt has md5sum");
 test_fail(+2);
 test_diag("    File t/data/aaa.txt does not have md5 checksum 0123456789abcdef0123456789abcdef");
-file_md5sum("t/data/aaa.txt", "0123456789abcdef0123456789abcdef");
-test_test("file_md5sum works when incorrect");
+file_md5sum_is("t/data/aaa.txt", "0123456789abcdef0123456789abcdef");
+test_test("file_md5sum_is works when incorrect");
 
 # Try encoded file.
 test_out("ok 1 - utf8 md5sum test");
-file_md5sum("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test");
-test_test("file_md5sum works on utf8 file");
+file_md5sum_is("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test");
+test_test("file_md5sum_is works on utf8 file");
 
 test_out("ok 1 - utf8 md5sum test");
-file_md5sum("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
+file_md5sum_is("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
     encoding => ':raw',
 });
-test_test("file_md5sum works on raw utf8 file");
+test_test("file_md5sum_is works on raw utf8 file");
 
 # Try encoded file with encoding.
 test_out("not ok 1 - utf8 md5sum test");
 test_fail(+2);
 test_diag("    File t/data/utf8.txt does not have md5 checksum 24bbe7a3423595c452c689e2b62f4b04");
-file_md5sum("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
+file_md5sum_is("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
     encoding => 'UTF-8',
 });
-test_test("file_md5sum fails on decoded utf8 file");
+test_test("file_md5sum_is fails on decoded utf8 file");
+
+is \&file_md5sum, \&file_md5sum, 'Function file_md5sum should alias to file_md5sum_is';
 
 # ===============================================================
 # Tests for file_contents_identical
