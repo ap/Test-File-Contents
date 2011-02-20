@@ -1,6 +1,9 @@
 Revision history for Test-File-Contents
 
 0.21
+      - Require Test::Pod 1.41 for Pod tests. Fixes test failures due to the
+        use of the `L<text|scheme>` Pod syntax diallowed in earlier versions
+        of Test::Pod.
 
 0.20    2011-02-18
       - Now require Perl 5.8.3 or higher. 5.8 has effectively been the
