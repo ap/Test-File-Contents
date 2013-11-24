@@ -25,7 +25,7 @@ Module::Build->new(
         resources => {
             homepage   => 'http://search.cpan.org/dist/Test-File-Contents/',
             bugtracker => 'http://github.com/theory/test-file-contents/issues/',
-            repository => 'http://github.com/theory/test-file-contents/tree/',
+            repository => 'http://github.com/theory/test-file-contents',
         }
     },
     add_to_cleanup      => [ 'Test-File-Contents-*' ],
