@@ -33,8 +33,6 @@ Interface
 These test functions take an optional hash reference of options which may
 include one or more of these options:
 
-=over
-
 *   `encoding`
 
     The encoding in which the file is encoded. This will be used in an I/O
