@@ -322,20 +322,21 @@ file_contents_eq_or_diff("t/data/aaa.txt", "aaa\n");
 test_test("works when correct with default description");
 
 test_out("not ok 1 - t/data/aaa.txt contents equal to string");
-test_fail(+8);
+test_fail(+9);
 test_diag(
     '--- t/data/aaa.txt',
     '+++ Want',
     '@@ -1 +1 @@',
     '-aaa',
     '+bbb',
+    '\ No newline at end of file'
 );
 file_contents_eq_or_diff("t/data/aaa.txt", "bbb");
 test_test("file_contents_eq_or_diff works when incorrect");
 
 # Try different diff style.
 test_out("not ok 1 - t/data/aaa.txt contents equal to string");
-test_fail(+10);
+test_fail(+11);
 test_diag(
     '*** t/data/aaa.txt',
     '--- Want',
@@ -344,6 +345,7 @@ test_diag(
     '! aaa',
     '--- 1 ----',
     '! bbb',
+    '\ No newline at end of file'
 );
 file_contents_eq_or_diff("t/data/aaa.txt", "bbb", { style => 'Context' });
 test_test("file_contents_eq_or_diff diagnostics use context");
@@ -357,12 +359,15 @@ UTF8: {
 
     # Should fail if the encoding is wrong.
     test_out("not ok 1 - t/data/utf8.txt contents equal to string");
-    test_fail(+7);
+    test_fail(+10);
     test_diag(
         '--- t/data/utf8.txt',
         '+++ Want',
         '@@ -1 +1 @@',
-        '-疇疇疇+ååå',
+        '-疇疇疇',
+        '\ No newline at end of file',
+        '+ååå',
+        '\ No newline at end of file'
     );
     file_contents_eq_or_diff('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
     test_test("file_contents_eq works with Big5 encoding");
