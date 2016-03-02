@@ -455,7 +455,7 @@ sub _resolve {
 
 =item * Kirrily Robert <skud@cpan.org>
 
-=item * David E. Wheeler <david@kineticode.com>
+=item * David E. Wheeler <david@justatheory.com>
 
 =back
 
