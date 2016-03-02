@@ -30,7 +30,9 @@
 # Avoid build files.
 ^Test-File-Contents
 
-# Avoid spelling test.
+# Avoid Pod tests.
+t/pod[^.]*\.t
+
 pod-spelling.t$
 ^MYMETA\.yml$
 ^MYMETA\.json$
