@@ -38,10 +38,11 @@ include one or more of these options:
     The encoding in which the file is encoded. This will be used in an I/O
     layer to read in the file, so that it can be properly decoded to Perl's
     internal representation. Examples include `UTF-8`, `iso-8859-3`, and
-    `cp1252`. See L<Encode::Supported> for a list of supported encodings. May
-    also be specified as a layer, such as ":utf8" or ":raw". See
-    [perlio](http://perldoc.perl.org/PerlIO.html) for a complete list of
-    layers.
+    `cp1252`. See
+    [Encode::Supported](http://search.cpan.org/perldoc?Encode::Supported) for
+    a list of supported encodings. May also be specified as a layer, such as
+    ":utf8" or ":raw". See [perlio](http://search.cpan.org/perldoc?PerlIO) for
+    a complete list of layers.
 
     Note that it's important to specify the encoding if you have non-ASCII
     characters in your file. And the value to be compared against (the string
@@ -139,7 +140,7 @@ Supported [options](#Options):
     file_contents_unlike $file, qr/foo/, { encoding => 'UTF-8' };
     file_contents_unlike $file, qr/foo/, { encoding => ':bytes' }, $description;
 
-Checks that the contents of a file I<do not> match a regular expression. The
+Checks that the contents of a file *do not* match a regular expression. The
 regular expression must be passed as a regular expression object created by
 `qr//`. Supported [options](#Options):
 
@@ -194,8 +195,8 @@ files in the diagnostics. Supported [options](#Options):
 Authors
 -------
 
-* [Kirrily Robert](/skud)
-* [David E. Wheeler](/theory)
+* [Kirrily Robert](//github.com/skud)
+* [David E. Wheeler](//github.com/theory)
 
 Copyright and License
 ---------------------
