@@ -201,7 +201,7 @@ Authors
 Copyright and License
 ---------------------
 
-Copyright (c) 2004-2007 Kirrily Robert. Some Rights Reserved.
+Copyright (c) 2004-2007 Kirrily Robert. Some Rights Reserved.<br />
 Copyright (c) 2007-2016 David E. Wheeler. Some Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify it under
