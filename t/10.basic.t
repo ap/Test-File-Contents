@@ -35,7 +35,7 @@ test_test("file_contents_eq works when incorrect");
 UTF8: {
     use utf8;
     test_out("ok 1 - t/data/utf8.txt contents equal to string");
-    file_contents_eq('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+    file_contents_eq('t/data/utf8.txt', "ååå\n", { encoding => 'UTF-8' });
     test_test("file_contents_eq works with UTF-8 encoding");
 }
 
@@ -86,8 +86,8 @@ UTF8: {
     # Should fail if our string is decoded.
     test_out("not ok 1 - t/data/utf8.txt contents not equal to string");
     test_fail(+2);
-    test_diag("    File t/data/utf8.txt contents equal to 'ååå'");
-    file_contents_ne('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+    test_diag("    File t/data/utf8.txt contents equal to 'ååå\n# '");
+    file_contents_ne('t/data/utf8.txt', "ååå\n", { encoding => 'UTF-8' });
     test_test("file_contents_ne fails with encoded arg string");
 
     # Should pass if the encoding is wrong.
@@ -248,11 +248,11 @@ test_test("file_md5sum_is works when incorrect");
 
 # Try encoded file.
 test_out("ok 1 - utf8 md5sum test");
-file_md5sum_is("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test");
+file_md5sum_is("t/data/utf8.txt", "3a35303372527f32671585a8ec8a2a8a", "utf8 md5sum test");
 test_test("file_md5sum_is works on utf8 file");
 
 test_out("ok 1 - utf8 md5sum test");
-file_md5sum_is("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
+file_md5sum_is("t/data/utf8.txt", "3a35303372527f32671585a8ec8a2a8a", "utf8 md5sum test", {
     encoding => ':raw',
 });
 test_test("file_md5sum_is works on raw utf8 file");
@@ -260,8 +260,8 @@ test_test("file_md5sum_is works on raw utf8 file");
 # Try encoded file with encoding.
 test_out("not ok 1 - utf8 md5sum test");
 test_fail(+2);
-test_diag("    File t/data/utf8.txt does not have md5 checksum 24bbe7a3423595c452c689e2b62f4b04");
-file_md5sum_is("t/data/utf8.txt", "24bbe7a3423595c452c689e2b62f4b04", "utf8 md5sum test", {
+test_diag("    File t/data/utf8.txt does not have md5 checksum 3a35303372527f32671585a8ec8a2a8a");
+file_md5sum_is("t/data/utf8.txt", "3a35303372527f32671585a8ec8a2a8a", "utf8 md5sum test", {
     encoding => 'UTF-8',
 });
 test_test("file_md5sum_is fails on decoded utf8 file");
@@ -330,7 +330,7 @@ test_diag(
     '-aaa',
     '+bbb',
 );
-file_contents_eq_or_diff("t/data/aaa.txt", "bbb");
+file_contents_eq_or_diff("t/data/aaa.txt", "bbb\n");
 test_test("file_contents_eq_or_diff works when incorrect");
 
 # Try different diff style.
@@ -345,26 +345,27 @@ test_diag(
     '--- 1 ----',
     '! bbb',
 );
-file_contents_eq_or_diff("t/data/aaa.txt", "bbb", { style => 'Context' });
+file_contents_eq_or_diff("t/data/aaa.txt", "bbb\n", { style => 'Context' });
 test_test("file_contents_eq_or_diff diagnostics use context");
 
 # Try an encoded file.
 UTF8: {
     use utf8;
     test_out("ok 1 - t/data/utf8.txt contents equal to string");
-    file_contents_eq_or_diff('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+    file_contents_eq_or_diff('t/data/utf8.txt', "ååå\n", { encoding => 'UTF-8' });
     test_test("file_contents_eq_or_diff works with UTF-8 encoding");
 
     # Should fail if the encoding is wrong.
     test_out("not ok 1 - t/data/utf8.txt contents equal to string");
-    test_fail(+7);
+    test_fail(+8);
     test_diag(
         '--- t/data/utf8.txt',
         '+++ Want',
         '@@ -1 +1 @@',
-        '-疇疇疇+ååå',
+        '-疇疇疇',
+        '+ååå',
     );
-    file_contents_eq_or_diff('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
+    file_contents_eq_or_diff('t/data/utf8.txt', "ååå\n", { encoding => 'Big5' });
     test_test("file_contents_eq works with Big5 encoding");
 }
 
