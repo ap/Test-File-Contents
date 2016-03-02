@@ -24,8 +24,8 @@ Module::Build->new(
     meta_merge => {
         resources => {
             homepage   => 'http://search.cpan.org/dist/Test-File-Contents/',
-            bugtracker => 'http://github.com/theory/test-file-contents/issues/',
-            repository => 'http://github.com/theory/test-file-contents',
+            bugtracker => 'https://github.com/theory/test-file-contents/issues/',
+            repository => 'https://github.com/theory/test-file-contents',
         }
     },
     add_to_cleanup      => [ 'Test-File-Contents-*' ],

@@ -462,11 +462,12 @@ sub _resolve {
 =head1 Support
 
 This module is stored in an open L<GitHub
-repository|http://github.com/theory/test-file-contents/tree/>. Feel free to
-fork and contribute!
+repository|https://github.com/theory/test-file-contents/>. Feel free to fork
+and contribute!
 
 Please file bug reports via L<GitHub
-Issues|http://github.com/theory/test-file-contents/issues/> or by sending mail to
+Issues|https://github.com/theory/test-file-contents/issues/> or by sending
+mail to
 L<bug-Test-File-Contents@rt.cpan.org|mailto:bug-Test-File-Contents@rt.cpan.org>.
 
 =head1 Copyright and License
