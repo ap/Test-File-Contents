@@ -27,8 +27,8 @@ test_test("works when correct with default text");
 
 test_out("not ok 1 - t/data/aaa.txt contents equal to string");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt contents not equal to 'bbb'");
-file_contents_eq("t/data/aaa.txt", "bbb");
+test_diag("    File t/data/aaa.txt contents not equal to 'bbb\n# '");
+file_contents_eq("t/data/aaa.txt", "bbb\n");
 test_test("file_contents_eq works when incorrect");
 
 # With encoding.
@@ -42,8 +42,8 @@ UTF8: {
 # Should fail if our string isn't decoded.
 test_out("not ok 1 - t/data/utf8.txt contents equal to string");
 test_fail(+2);
-test_diag("    File t/data/utf8.txt contents not equal to 'ååå'");
-file_contents_eq('t/data/utf8.txt', 'ååå', { encoding => 'UTF-8' });
+test_diag("    File t/data/utf8.txt contents not equal to 'ååå\n# '");
+file_contents_eq('t/data/utf8.txt', "ååå\n", { encoding => 'UTF-8' });
 test_test("file_contents_eq fails with encoded arg string");
 
 UTF8: {
@@ -51,8 +51,8 @@ UTF8: {
     use utf8;
     test_out("not ok 1 - t/data/utf8.txt contents equal to string");
     test_fail(+2);
-    test_diag("    File t/data/utf8.txt contents not equal to 'ååå'");
-    file_contents_eq('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
+    test_diag("    File t/data/utf8.txt contents not equal to 'ååå\n# '");
+    file_contents_eq('t/data/utf8.txt', "ååå\n", { encoding => 'Big5' });
     test_test("file_contents_eq works with Big5 encoding");
 }
 
@@ -80,7 +80,7 @@ test_test("file_contents_ne works when correct");
 UTF8: {
     use utf8;
     test_out("ok 1 - t/data/utf8.txt contents not equal to string");
-    file_contents_ne('t/data/utf8.txt', 'ååå', { encoding => ':raw' });
+    file_contents_ne('t/data/utf8.txt', "ååå\n", { encoding => ':raw' });
     test_test("file_contents_ne works with :raw encoding");
 
     # Should fail if our string is decoded.
@@ -92,7 +92,7 @@ UTF8: {
 
     # Should pass if the encoding is wrong.
     test_out("ok 1 - t/data/utf8.txt contents not equal to string");
-    file_contents_ne('t/data/utf8.txt', 'ååå', { encoding => 'Big5' });
+    file_contents_ne('t/data/utf8.txt', "ååå\n", { encoding => 'Big5' });
     test_test("file_contents_ne works with Big5 encoding");
 }
 
@@ -112,8 +112,8 @@ test_test("works when correct with default text");
 
 test_out("not ok 1 - t/data/aaa.txt contents equal to string");
 test_fail(+2);
-test_diag("    File t/data/aaa.txt contents not equal to 'bbb'");
-file_contents_is("t/data/aaa.txt", "bbb");
+test_diag("    File t/data/aaa.txt contents not equal to 'bbb\n# '");
+file_contents_is("t/data/aaa.txt", "bbb\n");
 test_test("file_contents_is works when incorrect");
 
 # ===============================================================
