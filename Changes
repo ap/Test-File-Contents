@@ -1,6 +1,8 @@
 Revision history for Test-File-Contents
 
 0.23
+      - Fix Windows encoding conversion by reading files in raw bytes before
+        converting to the encoding.
 
 0.22  2016-03-02T23:54:26Z
       - Adjusted tests to account for change in output of Text::Diff 1.44.

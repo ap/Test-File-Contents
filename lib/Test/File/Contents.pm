@@ -436,7 +436,7 @@ sub _slurp {
     my ($file, $encoding) = @_;
     my $layer = !$encoding  ? ''
         : $encoding =~ '^:' ? $encoding
-        :                     ":encoding($encoding)";
+        :                     ":raw:encoding($encoding)";
     open my $fh, "<$layer", $file or return;
     return '' if eof $fh;
     local $/;
