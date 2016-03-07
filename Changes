@@ -1,8 +1,9 @@
 Revision history for Test-File-Contents
 
 0.23
-      - Fix Windows encoding conversion by reading files in raw bytes before
-        converting to the encoding.
+      - Fix encoding errors when reading in a file on Windows with `utf8`
+        enabled. See https://rt.perl.org/Ticket/Display.html?id=127668 for the
+        bug we've worked around.
 
 0.22  2016-03-02T23:54:26Z
       - Adjusted tests to account for change in output of Text::Diff 1.44.

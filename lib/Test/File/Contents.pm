@@ -436,11 +436,12 @@ sub _slurp {
     my ($file, $encoding) = @_;
     my $layer = !$encoding  ? ''
         : $encoding =~ '^:' ? $encoding
-        :                     ":raw:encoding($encoding)";
+        :                     ":encoding($encoding)";
     open my $fh, "<$layer", $file or return;
     return '' if eof $fh;
-    local $/;
-    return <$fh>;
+    # Don't use `local $/; return <$fh>;`, it does not work on Windows.
+    # See https://rt.perl.org/Ticket/Display.html?id=127668 for details.
+    return join '', <$fh>;
 }
 
 sub _resolve {
