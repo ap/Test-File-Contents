@@ -17,10 +17,6 @@ Module::Build->new(
         'perl'          => 5.008003,
         'Text::Diff'    => '0.35',
     },
-    recommends => {
-        'Test::Pod'           => '1.41',
-        'Test::Pod::Coverage' => '1.06',
-    },
     meta_merge => {
         resources => {
             homepage   => 'http://search.cpan.org/dist/Test-File-Contents/',
