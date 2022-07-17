@@ -35,7 +35,7 @@ my %META = (
 sub MY::postamble { -f 'META.yml' ? return : <<'' }
 create_distdir : MANIFEST
 MANIFEST :
-	( git ls-files ; echo MANIFEST ) | sort -f > MANIFEST
+	( git ls-files ':!README.pod' ; echo MANIFEST ) | sort -f > MANIFEST
 distdir : boilerplate
 .PHONY  : boilerplate
 boilerplate : distmeta
