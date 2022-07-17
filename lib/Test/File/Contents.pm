@@ -6,7 +6,7 @@ use strict;
 
 =encoding utf8
 
-=head1 Name
+=head1 NAME
 
 Test::File::Contents - Test routines for examining the contents of files
 
@@ -39,7 +39,7 @@ our @EXPORT = qw(
 
 my $Test = Test::Builder->new;
 
-=head1 Synopsis
+=head1 SYNOPSIS
 
   use Test::File::Contents;
 
@@ -50,14 +50,14 @@ my $Test = Test::Builder->new;
   files_eq                 $file1, $file2,   $description;
   files_eq_or_diff         $file1, $file2,   $description;
 
-=head1 Description
+=head1 DESCRIPTION
 
 Got an app that generates files? Then you need to test those files to make
 sure that their contents are correct. This module makes that easy. Use its
 test functions to make sure that the contents of files are exactly what you
 expect them to be.
 
-=head1 Interface
+=head1 INTERFACE
 
 =head2 Options
 
@@ -450,31 +450,8 @@ sub _resolve {
 
 1;
 
-=head1 Authors
+__END__
 
-=over
+=pod
 
-=item * Kirrily Robert <skud@cpan.org>
-
-=item * David E. Wheeler <david@justatheory.com>
-
-=back
-
-=head1 Support
-
-This module is stored in an open L<GitHub
-repository|https://github.com/theory/test-file-contents/>. Feel free to fork
-and contribute!
-
-Please file bug reports via L<GitHub
-Issues|https://github.com/theory/test-file-contents/issues/> or by sending
-mail to
-L<bug-Test-File-Contents@rt.cpan.org|mailto:bug-Test-File-Contents@rt.cpan.org>.
-
-=head1 Copyright and License
-
-Copyright (c) 2004-2007 Kirrily Robert. Some Rights Reserved.
-Copyright (c) 2007-2016 David E. Wheeler. Some Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself.
+=cut

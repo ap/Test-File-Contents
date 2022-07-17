@@ -5,6 +5,8 @@ my $bt = q<https://rt.cpan.org/Public/Dist/Display.html?Name=Test-File-Contents>
 
 my %META = (
 	name             => 'Test-File-Contents',
+	author           => [ 'Kirrily Robert', 'David E. Wheeler' ],
+	x_copyright      => { holder => 'David E. Wheeler', year => 2016 },
 	license          => 'perl_5',
 	prereqs          => {
 		test         => {
@@ -32,9 +34,12 @@ my %META = (
 
 sub MY::postamble { -f 'META.yml' ? return : <<'' }
 create_distdir : MANIFEST
-distdir        : MANIFEST
 MANIFEST :
 	( git ls-files ; echo MANIFEST ) | sort -f > MANIFEST
+distdir : boilerplate
+.PHONY  : boilerplate
+boilerplate : distmeta
+	$(PERL) -Ilib boilerplate.pl $(DISTVNAME)
 
 ## BOILERPLATE ###############################################################
 require ExtUtils::MakeMaker;
