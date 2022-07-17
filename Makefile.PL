@@ -1,5 +1,8 @@
 use 5.008003; use strict; use warnings;
 
+my $sc = q<https://github.com/ap/Test-File-Contents>;
+my $bt = q<https://rt.cpan.org/Public/Dist/Display.html?Name=Test-File-Contents>;
+
 my %META = (
 	name             => 'Test-File-Contents',
 	license          => 'perl_5',
@@ -20,9 +23,8 @@ my %META = (
 		},
 	},
 	resources      => {
-		homepage   => q<http://search.cpan.org/dist/Test-File-Contents/>,
-		bugtracker => { web => q<https://github.com/theory/test-file-contents/issues/> },
-		repository => { url => q<https://github.com/theory/test-file-contents> },
+		repository => { type => 'git', url => "$sc.git", web => $sc },
+		bugtracker => { web => $bt },
 		license    => [ 'http://dev.perl.org/licenses/' ],
 	},
 );
