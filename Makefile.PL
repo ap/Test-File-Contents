@@ -7,7 +7,7 @@ my %META = (
 	name             => 'Test-File-Contents',
 	license          => 'perl_5',
 	prereqs          => {
-		build        => {
+		test         => {
 			requires => {
 				'Test::More'    => '0.70',
 			},
@@ -22,6 +22,7 @@ my %META = (
 			},
 		},
 	},
+	dynamic_config => 0,
 	resources      => {
 		repository => { type => 'git', url => "$sc.git", web => $sc },
 		bugtracker => { web => $bt },
