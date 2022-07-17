@@ -1,5 +1,8 @@
 Release history for Test-File-Contents
 
+0.240   2022-07-17
+      - Packaging improvements. No functional changes.
+
 0.23    2016-03-16
       - Fix encoding errors when reading in a file on Windows with `utf8`
         enabled. See https://rt.perl.org/Ticket/Display.html?id=127668 for the
