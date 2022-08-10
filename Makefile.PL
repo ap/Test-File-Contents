@@ -8,27 +8,27 @@ my %META = (
 	author           => [ 'Kirrily Robert', 'David E. Wheeler' ],
 	x_copyright      => { holder => 'David E. Wheeler', year => 2016 },
 	license          => 'perl_5',
-	prereqs          => {
-		test         => {
-			requires => {
-				'Test::More'    => '0.70',
-			},
-		},
-		runtime      => {
-			requires => {
-				perl            => '5.008003',
-				'Test::Builder' => '0.70',
-				'Digest::MD5'   => 0,
-				'File::Spec'    => 0,
-				'Text::Diff'    => '0.35',
-			},
-		},
-	},
-	dynamic_config => 0,
-	resources      => {
+	resources        => {
 		repository => { type => 'git', url => "$sc.git", web => $sc },
 		bugtracker => { web => $bt },
 		license    => [ 'http://dev.perl.org/licenses/' ],
+	},
+	dynamic_config => 0,
+	prereqs => {
+		runtime => {
+			requires => {qw(
+				perl 5.008003
+				Test::Builder 0.70
+				Digest::MD5 0
+				File::Spec 0
+				Text::Diff 0.35
+			)},
+		},
+		test => {
+			requires => {qw(
+				Test::More 0.70
+			)},
+		},
 	},
 );
 
