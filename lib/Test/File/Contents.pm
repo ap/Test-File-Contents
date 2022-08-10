@@ -19,8 +19,8 @@ use Digest::MD5;
 use File::Spec;
 use Text::Diff;
 
-require Exporter;
-our @ISA = qw(Exporter);
+BEGIN { require Exporter; *import = \&Exporter::import }
+
 our @EXPORT = qw(
     file_contents_eq
     file_contents_eq_or_diff
